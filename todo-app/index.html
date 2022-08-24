@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <!-- Import Vue.js -->
+    <script src="https://unpkg.com/vue@3.0.11/dist/vue.global.js"></script>
+</head>
+<body>
+    <h1>This is a todo app</h1>
+    <div id="app">
+        <form action="" @submit.prevent="addTodo">
+            <input type="text" v-model='info'>
+            <button>Add Todo</button>
+        </form>
+        <ul v-for="todo in filteredTodos" :key='todo.id'>
+            <li>
+                <input type="checkbox" v-model='todo.done'>
+                <span :class='{ done: todo.done }'>{{ todo.text }}</span>
+                <button @click="removeTodo(todo)"> X</button>
+            </li>
+        </ul>
+        <div>Xem trước todo info: {{info}}</div>
+        <button @click="hideCompleted =! hideCompleted">
+            {{hideCompleted?"Show All":"Hide Completed"}}
+        </button>
+    </div>
+
+    <script>
+        let id = 1
+        const app = Vue.createApp({
+            data: function() {
+                return {
+                    info: 'some thing to bind',
+                    hideCompleted: false,
+                    todos: [
+                        {id: id++, text: 'Learn HTML', done: true},
+                        {id: id++, text: 'Learn CSS', done: false},
+                        {id: id++, text: 'Learn Javascript', done: false}
+                    ]
+                }
+            },
+            methods: {
+                addTodo() {
+                    this.todos.push({id: id++, text: this.info});
+                    this.info = ''
+                },
+                removeTodo(todo) {
+                    this.todos = this.todos.filter(t => t !== todo)
+                }
+            },
+            computed: {
+                filteredTodos() {
+                    return this.hideCompleted ? this.todos.filter(t => !t.done) : this.todos
+                }
+            }
+        })
+        const mountedApp = app.mount('#app')
+    </script>
+</body>
+</html>
