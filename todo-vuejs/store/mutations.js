@@ -7,7 +7,7 @@ export default {
                 title: newTodo,
                 completed: false
             })
-            state.newTodo = ''
+            state.newTodo = '';
         }
     },
     deleteTodo (state, item) {
